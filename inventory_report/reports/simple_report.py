@@ -3,7 +3,7 @@ from datetime import date
 
 class SimpleReport:
     @classmethod
-    def __get_first_manufacturing_date(cls, data: list[dict]):
+    def _get_first_manufacturing_date(cls, data: list[dict]):
         data_fabricacao = date.fromisoformat(data[0]["data_de_fabricacao"])
         for product in data:
             data_fab_item = date.fromisoformat(product["data_de_fabricacao"])
@@ -12,7 +12,7 @@ class SimpleReport:
         return data_fabricacao
 
     @classmethod
-    def __get_closer_expiration_date(cls, data: list[dict]):
+    def _get_closer_expiration_date(cls, data: list[dict]):
         hoje = date.today()
         diferenca_date = date.fromisoformat(data[0]["data_de_validade"]) - hoje
         data_validade = date.fromisoformat(data[0]["data_de_validade"])
@@ -25,12 +25,12 @@ class SimpleReport:
         return data_validade
 
     @classmethod
-    def __get_bigger_stock(cls, data: list[dict]):
+    def _get_bigger_stock(cls, data: list[dict]):
         company_stock = dict()
         for product in data:
             nome_empresa = product["nome_da_empresa"]
             if nome_empresa not in company_stock:
-                company_stock[nome_empresa] = 0
+                company_stock[nome_empresa] = 1
             else:
                 company_stock[nome_empresa] += 1
 
@@ -40,9 +40,9 @@ class SimpleReport:
     @staticmethod
     def generate(data):
 
-        first_date = SimpleReport.__get_first_manufacturing_date(data)
-        last_date = SimpleReport.__get_closer_expiration_date(data)
-        empresa_mais_produtos = SimpleReport.__get_bigger_stock(data)
+        first_date = SimpleReport._get_first_manufacturing_date(data)
+        last_date = SimpleReport._get_closer_expiration_date(data)
+        empresa_mais_produtos = SimpleReport._get_bigger_stock(data)
         return (
             f"Data de fabricação mais antiga: {first_date}\n"
             f"Data de validade mais próxima: {last_date}\n"
