@@ -3,6 +3,7 @@ from inventory_report.reports.complete_report import CompleteReport
 
 import csv
 import json
+import xmltodict
 
 
 class Inventory:
@@ -18,6 +19,10 @@ class Inventory:
             with open(path) as file:
                 data_list = json.load(file)
                 return data_list
+        if type_path == "xml":
+            with open(path) as fd:
+                data_list = xmltodict.parse(fd.read())
+                return data_list["dataset"]["record"]
 
     @classmethod
     def generate_report(cls, data: list[dict], report_type: str):
