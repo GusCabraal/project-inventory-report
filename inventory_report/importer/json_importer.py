@@ -3,8 +3,8 @@ import json
 
 
 class JsonImporter(Importer):
-    @classmethod
-    def get_data(cls, path):
+    @staticmethod
+    def import_data(path):
         *rest, type_path = path.split(".")
         if type_path == "json":
             with open(path) as file:
@@ -12,7 +12,3 @@ class JsonImporter(Importer):
                 return data_list
         else:
             raise ValueError("Arquivo inválido")
-
-    @staticmethod
-    def import_data(path: str):
-        return JsonImporter.get_data(path)
